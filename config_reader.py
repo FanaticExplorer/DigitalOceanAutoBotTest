@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     def get_bot_token(cls, value):
         # If the value is not provided, try to get it from the environment variable BOT_TOKEN
         if value is None:
+            print(".env not found, using environment variable instead")
             value = os.environ.get("BOT_TOKEN")
         # Return the value or raise an exception if it is still None
         if value is None:
