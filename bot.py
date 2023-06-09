@@ -16,6 +16,11 @@ dp = Dispatcher()
 async def cmd_start(message: types.Message):
     await message.answer("Hello!")
 
+#adding for test - will it be updated?
+@dp.message(Command("hello"))
+async def cmd_start(message: types.Message):
+    await message.answer("sup")
+
 # Запуск процесса поллинга новых апдейтов
 async def main():
     await dp.start_polling(bot)
