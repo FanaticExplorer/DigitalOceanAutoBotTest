@@ -16,13 +16,15 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
-      - name: Write SSH key to temporary file
+      - name: Connect to droplet via ssh
         run: |
+          mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          doctl compute ssh --ssh-private-ip
       
       - name: Copy all files to droplet
-        run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
+        run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
       
       - name: Install dependencies on droplet
         run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- pip install -r /vdb/requirements.txt
