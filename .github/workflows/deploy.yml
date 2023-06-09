@@ -1,0 +1,26 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: Copy all files to droplet
+        run: doctl compute scp --recursive --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }}:/vdb/
+      
+      - name: Install dependencies on droplet
+        run: doctl compute ssh --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }} -- pip install -r /vdb/requirements.txt
+      
+      - name: Run bot.py on droplet
+        run: doctl compute ssh --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }} -- python /vdb/bot.py
