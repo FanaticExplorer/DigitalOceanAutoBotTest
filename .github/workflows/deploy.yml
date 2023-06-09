@@ -18,10 +18,8 @@
         
         - name: Connect to droplet via ssh
           run: |
-            mkdir .ssh
-            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            doctl compute ssh --ssh-private-ip
+            echo "${{ secrets.SSH_KEY }}" > ssh.key
+            doctl compute ssh --ssh-key-path ssh.key
         
         - name: Copy all files to droplet
           run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
