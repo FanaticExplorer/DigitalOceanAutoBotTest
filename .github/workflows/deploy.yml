@@ -1,33 +1,33 @@
-name: Deploy to DigitalOcean
+  name: Deploy to DigitalOcean
 
-on:
-  push:
-    branches: [ master ]
+  on:
+    push:
+      branches: [ master ]
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      
-      - name: Connect to droplet via ssh
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          doctl compute ssh --ssh-private-ip
-      
-      - name: Copy all files to droplet
-        run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
-      
-      - name: Install dependencies on droplet
-        run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- pip install -r /vdb/requirements.txt
-      
-      - name: Run bot.py on droplet
-        run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- python /vdb/bot.py
+  jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        
+        - name: Install doctl
+          uses: digitalocean/action-doctl@v2
+          with:
+            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        
+        - name: Connect to droplet via ssh
+          run: |
+            mkdir ~/.ssh
+            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            doctl compute ssh --ssh-private-ip
+        
+        - name: Copy all files to droplet
+          run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
+        
+        - name: Install dependencies on droplet
+          run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- pip install -r /vdb/requirements.txt
+        
+        - name: Run bot.py on droplet
+          run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- python /vdb/bot.py
