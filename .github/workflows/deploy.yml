@@ -17,7 +17,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
       - name: Copy all files to droplet
-        run: git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
+        run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
       
       - name: Install dependencies on droplet
         run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- pip install -r /vdb/requirements.txt
