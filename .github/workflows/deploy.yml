@@ -16,16 +16,11 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
-      - name: Write SSH key to temporary file
-        run: |
-          echo "${{ secrets.SSH_KEY }}" > /tmp/ssh_key
-          chmod 600 /tmp/ssh_key
-      
       - name: Copy all files to droplet
-        run: doctl compute scp --ssh-key-path /tmp/ssh_key * ${{ secrets.DROPLET_IP }}:/vdb/*
+        run: doctl compute scp --ssh-private-ip ${{ secrets.DROPLET_PRIVATE_IP }} * root@${{ secrets.DROPLET_IP }}:/vdb/*
       
       - name: Install dependencies on droplet
-        run: doctl compute ssh --ssh-key-path /tmp/ssh_key ${{ secrets.DROPLET_IP }} -- pip install -r /vdb/requirements.txt
+        run: doctl compute ssh --ssh-private-ip ${{ secrets.DROPLET_PRIVATE_IP }} root@${{ secrets.DROPLET_IP }} -- pip install -r /vdb/requirements.txt
       
       - name: Run bot.py on droplet
-        run: doctl compute ssh --ssh-key-path /tmp/ssh_key ${{ secrets.DROPLET_IP }} -- python /vdb/bot.py
+        run: doctl compute ssh --ssh-private-ip ${{ secrets.DROPLET_PRIVATE_IP }} root@${{ secrets.DROPLET_IP }} -- python /vdb/bot.py
