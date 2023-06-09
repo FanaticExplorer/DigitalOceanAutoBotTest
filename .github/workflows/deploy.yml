@@ -18,7 +18,7 @@
         
         - name: Connect to droplet via ssh
           run: |
-            mkdir ~/.ssh
+            mkdir .ssh
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             doctl compute ssh --ssh-private-ip
