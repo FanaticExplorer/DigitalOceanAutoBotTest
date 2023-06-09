@@ -19,7 +19,7 @@
         - name: Connect to droplet via ssh
           run: |
             echo "${{ secrets.SSH_KEY }}" > ssh.key
-            doctl compute ${{ secrets.DROPLET_ID }} ssh --ssh-key-path ssh.key
+            doctl compute ssh ${{ secrets.DROPLET_ID }} --ssh-key-path ssh.key
         
         - name: Copy all files to droplet
           run: doctl compute ssh root@${{ secrets.DROPLET_PRIVATE_IP }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
