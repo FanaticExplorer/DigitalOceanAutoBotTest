@@ -18,7 +18,7 @@
         
         - name: Connect to droplet via ssh
           run: |
-            echo -n "${{ secrets.SSH_KEY }}" > ssh.key
+            echo -e "${{ secrets.SSH_KEY }}" > ssh.key
             doctl compute ssh --ssh-key-path ssh.key
         
         - name: Copy all files to droplet
