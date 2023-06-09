@@ -17,7 +17,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
       - name: Copy all files to droplet
-        run: doctl compute scp --recursive --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }}:/vdb/
+        run: doctl compute scp --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }}:/vdb/*
       
       - name: Install dependencies on droplet
         run: doctl compute ssh --ssh-key-path ~/.ssh/id_rsa ${{ secrets.DROPLET_IP }} -- pip install -r /vdb/requirements.txt
