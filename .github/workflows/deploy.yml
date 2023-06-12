@@ -26,7 +26,7 @@
           run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
         
         - name: Install dependencies on droplet
-          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- pip install -r /vdb/requirements.txt
+          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- python3 -m pip install -r requirements.txt
         
         - name: Run bot.py on droplet
-          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- python /vdb/bot.py
+          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- python3 -m bot.py
