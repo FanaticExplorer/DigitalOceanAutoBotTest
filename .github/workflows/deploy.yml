@@ -23,7 +23,7 @@
             ssh-keyscan -H ${{ secrets.DROPLET_IP }} > ~/.ssh/known_hosts
         
         - name: Copy all files to droplet
-          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest
+          run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- "git clone https://github.com/FanaticExplorer/DigitalOceanAutoBotTest"
         
         - name: Install dependencies on droplet
           run: doctl compute ssh ${{ secrets.DROPLET_ID }} -- pip install -r requirements.txt
