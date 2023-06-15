@@ -22,7 +22,7 @@
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.DROPLET_IP }} > ~/.ssh/known_hosts
         
-        - name: Copy all files to droplet
+        - name: Copy all files to droplet #with defined folder in .bashrc
           run: doctl compute ssh ${{ secrets.DROPLET_ID }} --ssh-command "git pull origin master"
         
         - name: Install dependencies on droplet
